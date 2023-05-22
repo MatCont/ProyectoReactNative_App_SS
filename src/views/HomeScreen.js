@@ -22,7 +22,7 @@ const HomeScreen = () => {
 
         querySnapshot.forEach((doc) => {
           const userData = doc.data();
-          const nombreUsuario = userData.nombre; // Obtén el campo que contiene el nombre del usuario
+          const nombreUsuario = userData.nombreAfectado; // Obtén el campo que contiene el nombre del usuario
           const primeraPalabra = nombreUsuario.split(' ')[0];
           setUserName(primeraPalabra);
           console.log(nombreUsuario);

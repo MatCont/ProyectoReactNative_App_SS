@@ -20,12 +20,21 @@ import COLORS from '../consts/colors';
 import { PrimaryButton } from './components/Button';
 
 const Formulario = (navigation) => {
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     obtenerUid();
     cargarDatosPerfil();
   }, []);
+
+
+  const datosObligatorios = async () => {
+    if (!tipoAgresion || !fecha || !hora || !nombreComuna || !nombreTipo || !establecimientoId || !unidad || !tipoAgresor || !primerNombreTestigo1 || !segundoApellidoTestigo1 || !segundoNombreTestigo1 || !primerApellidoTestigo1 || !rutTestigo1 || !telefonoTestigo1 || !descripcion) {
+      Alert.alert('Faltan datos', 'Por favor complete los campos obligatorios');
+    } else {
+      subirReporte()
+    }
+  }
 
   const subirReporte = async () => {
 
@@ -48,7 +57,7 @@ const Formulario = (navigation) => {
         genero: genero,
         estamentoAfectado: estamentoAfectado,
         tipoEstamento: tipoEstamento,
-        rutAfectado: rutValidoAfectado,
+        rutAfectado: rutAfectado,
         fechaNacimiento: fechaNacimiento,
         edad: edad,
         domicilio: domicilio,
@@ -68,7 +77,7 @@ const Formulario = (navigation) => {
         rutTestigo2: rutTestigo2Valido,
         telefonoTestigo2: telefonoTestigo2,
         descripcion: descripcion,
-        estado: 'reportado',
+        estado: 'revision',
       })
         .then(() => {
           Alert.alert('Reporte subido');
@@ -95,52 +104,31 @@ const Formulario = (navigation) => {
 
 
   const cargarDatosPerfil = async () => {
-    if (!uid) {
-      return;
-    }
+    const auth = getAuth(); // Obtén la instancia de autenticación de Firebase
+    const user = auth.currentUser; // Obtén el usuario actual
 
-    const db = getFirestore();
-    const profileRef = doc(db, 'UserProfiles', uid);
+    if (user) {
+      const userId = user.uid; // Obtén el UID del usuario actual
+      const userProfileQuery = query(collection(FIRESTORE_DB, 'UserProfiles'), where('uid', '==', userId));
+      const querySnapshot = await getDocs(userProfileQuery);
 
-    try {
-      const profileDoc = await getDoc(profileRef);
-      if (profileDoc.exists()) {
-        const profileData = profileDoc.data();
-        setNombreAfectado(profileData.nombreAfectado);
-        setGenero(profileData.genero);
-        setRutValidoAfectado(profileData.rutAfectado);
-        setFechaNacimiento(profileData.fechaNacimiento);
-        setTelefonoAfectado(profileData.telefonoAfectado);
-        setCorreo(profileData.correo);
-        setEdad(profileData.edad);
-        setDomicilio(profileData.domicilio);
-        setMutualiad(profileData.mutual);
-        setEstamentoAfectado(profileData.estamentoAfectado);
-        setTipoEstamento(profileData.tipoEstamento);
-      }
-      Alert.alert('peril existe');
-    toggleEditing();
-      
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error al cargar los datos del perfil');
+      querySnapshot.forEach((doc) => {
+        setNombreAfectado(doc.data().nombreAfectado);
+        setGenero(doc.data().genero);
+        setRutAfectado(doc.data().rutAfectado);
+        setFechaNacimiento(doc.data().fechaNacimiento);
+        setEdad(doc.data().edad);
+        setTelefonoAfectado(doc.data().telefonoAfectado);
+        setCorreo(doc.data().correo);
+        setDomicilio(doc.data().domicilio);
+        setMutualiad(doc.data().mutualidad);
+        setEstamentoAfectado(doc.data().estamentoAfectado);
+        setTipoEstamento(doc.data().tipoEstamento);
+        console.log();
+      });
+      toggleEditing();
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -167,7 +155,6 @@ const Formulario = (navigation) => {
 
   //I.	IDENTIFIQUE TIPO(S) DE AGRESIÓN(ES)
   const [tipoAgresion, setTipoAgresion] = useState('');
-  const [perfil, setPerfil] = useState('false');
 
 
   //II.	ANTECEDENTES DE LA AGRESIÓN
@@ -176,7 +163,6 @@ const Formulario = (navigation) => {
   const [nombreComuna, setNombreComuna] = useState('');
   const [tipoId, setTipoId] = useState('');
   const [nombreTipo, setNombreTipo] = useState('');
-
   const [establecimientoId, setEstablecimientoId] = useState('');
   const [establecimientos, setEstablecimientos] = useState([]);
   const [unidad, setUnidad] = useState('');
@@ -189,8 +175,7 @@ const Formulario = (navigation) => {
   const [genero, setGenero] = useState('');
   const [estamentoAfectado, setEstamentoAfectado] = useState('');
   const [tipoEstamento, setTipoEstamento] = useState('');
-  const [rutValido, setRutValido] = useState('');
-  const [rutValidoAfectado, setRutValidoAfectado] = useState('');
+  const [rutAfectado, setRutAfectado] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [edad, setEdad] = useState('');
   const [domicilio, setDomicilio] = useState('');
@@ -212,6 +197,7 @@ const Formulario = (navigation) => {
 
   //V.	TESTIGOS DEL CONFLICTO
   // TESTIGO 1
+  
   const [primerNombreTestigo1, setPrimerNombreTestigo1] = useState('');
   const [segundoNombreTestigo1, setSegundoNombreTestigo1] = useState('');
   const [primerApellidoTestigo1, setPrimerApellidoTestigo1] = useState('');
@@ -288,8 +274,6 @@ const Formulario = (navigation) => {
       // Formatea la fecha con los separadores deseados
       const formatted = match[1] + '-' + match[2] + '-' + match[3];
       setFecha(formatted);
-      const edadCalculada = calcularEdad(formatted);
-      setEdad(edadCalculada.toString());
     } else {
       setFecha(cleaned);
     }
@@ -529,7 +513,7 @@ const Formulario = (navigation) => {
                 <Picker.Item label="Otro" value="Otro" />
               </Picker>
             </View>
-            {estamentoAfectado ? (
+            {tipoAgresor ? (
               <Text style={styles.campoIngresado}>Campo ingresado</Text>
             ) : (
               <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
@@ -620,6 +604,12 @@ const Formulario = (navigation) => {
               maxLength={20}
               style={styles.textInput}
             />
+            {primerNombreTestigo1 ? (
+              <Text style={styles.campoIngresado}>Campo ingresado</Text>
+            ) : (
+              <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
+            )}
+
             <Text style={styles.subTitulo}>Ingrese segundo nombre</Text>
             <TextInput
               value={segundoNombreTestigo1}
@@ -628,6 +618,12 @@ const Formulario = (navigation) => {
               maxLength={20}
               style={styles.textInput}
             />
+            {segundoNombreTestigo1 ? (
+              <Text style={styles.campoIngresado}>Campo ingresado</Text>
+            ) : (
+              <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
+            )}
+
             <Text style={styles.subTitulo}>Ingrese primer apellido</Text>
             <TextInput
               value={primerApellidoTestigo1}
@@ -636,6 +632,12 @@ const Formulario = (navigation) => {
               maxLength={20}
               style={styles.textInput}
             />
+            {primerApellidoTestigo1 ? (
+              <Text style={styles.campoIngresado}>Campo ingresado</Text>
+            ) : (
+              <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
+            )}
+
             <Text style={styles.subTitulo}>Ingrese segundo apellido</Text>
             <TextInput
               value={segundoApellidoTestigo1}
@@ -643,7 +645,11 @@ const Formulario = (navigation) => {
               placeholder="Segundo apellido"
               maxLength={20}
               style={styles.textInput}
-            />
+            />{segundoApellidoTestigo1 ? (
+              <Text style={styles.campoIngresado}>Campo ingresado</Text>
+            ) : (
+              <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
+            )}
 
             <Text style={styles.subTitulo}>Ingrese rut de testigo 1*</Text>
             <TextInput
@@ -761,7 +767,7 @@ const Formulario = (navigation) => {
                 title="Guardar"
                 color="blue"
                 //onPress={() => guardarPerfil()}/>
-                onPress={() => subirReporte()} />
+                onPress={() => datosObligatorios()} />
 
             </View>
           </>

@@ -7,8 +7,9 @@ import {View} from 'react-native';
 import HomeScreen from '../HomeScreen';
 import Formulario from '../Formulario';
 import Perfil from '../Perfil';
+import EditarPerfil from '../EditarPerfil'
 import VistaReportesUsuarios from '../VistaReportesUsuario';
-import showReporte from '../ShowReporte'
+import ShowReporteUsuario from '../ShowReporteUsuario'
 
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
@@ -19,7 +20,17 @@ function MyStackReportes(){
   return(
     <Stack.Navigator initialRouteName="VistaReportes">
       <Stack.Screen name='VistaReportes' component={VistaReportesUsuarios}  options={{headerShown:false,}} />
-      <Stack.Screen name='Show' component={showReporte} options={{headerShown:false,}}/>
+      <Stack.Screen name='Show' component={ShowReporteUsuario} options={{headerShown:false,}}/>
+    </Stack.Navigator>
+      
+  )
+}
+
+function MyStackPerfil(){
+  return(
+    <Stack.Navigator initialRouteName="VistaPerfil">
+      <Stack.Screen name='VistaPerfil' component={Perfil}  options={{headerShown:false,}} />
+      <Stack.Screen name='EditarPerfil' component={EditarPerfil} options={{headerShown:false,}}/>
     </Stack.Navigator>
       
   )
@@ -62,7 +73,7 @@ const BottomNavigatorUsuario = () => {
 
       <Tab.Screen
         name="Perfil"
-        component={Perfil}
+        component={MyStackPerfil}
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="person" color={color} size={28} />

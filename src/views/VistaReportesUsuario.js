@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, TextInput, Image, Text, View, TouchableOpacity } from 'react-native';
-import COLORS from '../consts/colors';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
-import { FIRESTORE_DB } from '../consts/firebase';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+
+import COLORS from '../consts/colors';
+import { FIRESTORE_DB } from '../consts/firebase';
 
 const VistaReportesUsuarios = () => {
   const [lista, setLista] = useState([]);
@@ -19,7 +20,7 @@ const VistaReportesUsuarios = () => {
 
       if (user) {
         const userId = user.uid;
-        
+
         try {
           const q = query(
             collection(FIRESTORE_DB, 'ReportsUploaded'),
@@ -30,23 +31,18 @@ const VistaReportesUsuarios = () => {
           const docs = [];
 
           querySnapshot.forEach((doc) => {
-            const { nombreAfectado, nombreComuna, fecha, establecimientoId, estado } = doc.data();
+            const { nombreComuna, fecha, establecimientoId, estado } = doc.data();
 
             if (!estadoFiltrado || estado === estadoFiltrado) {
               docs.push({
                 id: doc.id,
-                nombreAfectado,
                 nombreComuna,
                 fecha,
                 establecimientoId,
                 estado,
               });
             }
-            console.log(doc.data());
           });
-
-          // Ordenar por fecha de mayor a menor
-          docs.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
           setLista(docs);
         } catch (error) {
@@ -58,13 +54,12 @@ const VistaReportesUsuarios = () => {
     getLista();
   }, [estadoFiltrado]);
 
-
   const handleFiltrarRole = (estado) => {
     setEstadoFiltrado(estado);
   };
 
   const handleMostrarTodos = () => {
-    setEstadoFiltrado(null);
+    setEstadoFiltrado('');
   };
 
   const getCardBorderStyle = (estado) => {
@@ -108,11 +103,10 @@ const VistaReportesUsuarios = () => {
                 onPress={() => handleCardPress(item.id)}
               >
                 <Card containerStyle={[styles.card, getCardBorderStyle(item.estado)]}>
-                  <Card.Title>{item.nombreAfectado}</Card.Title>
+                  <Card.Title>{item.estado}</Card.Title>
                   <Card.Divider />
                   <Text>Fecha: {item.fecha}</Text>
                   <Text>Comuna: {item.nombreComuna}</Text>
-                  <Text>Estado: {item.estado}</Text>
                 </Card>
               </TouchableOpacity>
             ))}
