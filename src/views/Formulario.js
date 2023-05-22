@@ -25,7 +25,6 @@ const Formulario = (navigation) => {
   useEffect(() => {
     obtenerUid();
     cargarDatosPerfil();
-    toggleEditing();
   }, []);
 
   const subirReporte = async () => {
@@ -119,6 +118,8 @@ const Formulario = (navigation) => {
         setEstamentoAfectado(profileData.estamentoAfectado);
         setTipoEstamento(profileData.tipoEstamento);
       }
+      Alert.alert('peril existe');
+    toggleEditing();
       
     } catch (error) {
       console.log(error);

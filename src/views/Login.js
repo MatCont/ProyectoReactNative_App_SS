@@ -34,19 +34,32 @@ const Login = () => {
             })
     }
 
-    const handleSignIn =()=>{
-        signInWithEmailAndPassword(auth,email,password)
-        .then((userCredential)=>{
-            console.log('Signed in')
-            const user =userCredential.user;
-            console.log(user)
-            navigation.navigate('Home')
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
-
+    const handleSignIn = () => {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            console.log('Signed in');
+            const user = userCredential.user;
+            console.log(user);
+      
+            // Obtener el dominio del correo electrónico
+            const domain = email.split('@')[1];
+      
+            // Realizar la redirección según el dominio del correo electrónico
+            if (domain === 'oper.cl') {
+              navigation.navigate('HomeOperador');
+            } else if (domain === 'user.cl') {
+              navigation.navigate('HomeUsuario');
+            } else if (domain === 'admin.cl') {
+              // Mostrar un texto en lugar de una ventana específica
+              console.log('Administrador logueado');
+            } else {
+              console.log('Correo electrónico no válido');
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
     return (
 
         <View style={style.container}>
@@ -104,7 +117,6 @@ const style = StyleSheet.create({
     imglogo: {
         width: 100,
         height: 100,
-        borderRadius: 50,
         borderColor: '#fff',
         borderWidth: 1,
         marginVertical: 30,

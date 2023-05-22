@@ -20,7 +20,8 @@ const App = () => {
       <StatusBar backgroundColor="black" />
       <Stack.Navigator screenOptions={{ headerShown: Login }}>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={BottomNavigatorUsuario} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeUsuario" component={BottomNavigatorUsuario} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeOperador" component={BottomNavigatorOperador} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
