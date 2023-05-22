@@ -12,6 +12,8 @@ const VistaReportes = () => {
   const [lista, setLista] = useState([]);
   const [estadoFiltrado, setEstadoFiltrado] = useState('');
   const [filtroComuna, setFiltroComuna] = useState('');
+  const [cantidadEnRevision, setCantidadEnRevision] = useState(0);
+  const [cantidadReportados, setCantidadReportados] = useState(0);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -19,6 +21,9 @@ const VistaReportes = () => {
       try {
         const querySnapshot = await getDocs(collection(FIRESTORE_DB, 'ReportsUploaded'));
         const docs = [];
+
+        let enRevisionCount = 0;
+        let reportadosCount = 0;
 
         querySnapshot.forEach((doc) => {
           const { nombreAfectado, nombreComuna, fecha, establecimientoId, estado } = doc.data();
@@ -35,6 +40,12 @@ const VistaReportes = () => {
               establecimientoId,
               estado,
             });
+
+            if (estado === 'revision') {
+              enRevisionCount++;
+            } else if (estado === 'reportado') {
+              reportadosCount++;
+            }
           }
         });
 
@@ -42,6 +53,8 @@ const VistaReportes = () => {
         docs.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
         setLista(docs);
+        setCantidadEnRevision(enRevisionCount);
+        setCantidadReportados(reportadosCount);
       } catch (error) {
         // Manejar errores
       }
@@ -50,7 +63,6 @@ const VistaReportes = () => {
     getLista();
   }, [estadoFiltrado, filtroComuna]);
 
- 
   const handleFiltrarRole = (estado) => {
     setEstadoFiltrado(estado);
   };
@@ -86,7 +98,7 @@ const VistaReportes = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.botonFiltro} onPress={() => handleFiltrarRole('revision')}>
-          <Text style={styles.textoBoton}>Revisión</Text>
+          <Text style={styles.textoBoton}>Activos</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.botonFiltro} onPress={() => handleFiltrarRole('reportado')}>
           <Text style={styles.textoBoton}>Reportado</Text>
@@ -97,37 +109,48 @@ const VistaReportes = () => {
         <Picker
           selectedValue={filtroComuna}
           onValueChange={setFiltroComuna}
-          >
-            <Picker.Item label="Seleccione una comuna" value="" />
-            {dataComunaEstablecimiento.map(comuna => (
-              <Picker.Item key={comuna.id} label={comuna.name} value={comuna.name} />
-            ))}
-          </Picker>
-        </View>
-  
-        <ScrollView>
-          <View style={styles.container}>
-            {lista.map((item) => (
-              <TouchableOpacity
-                key={item.id}
-                onPress={() => handleCardPress(item.id)}
-              >
-                <Card containerStyle={[styles.card, getCardBorderStyle(item.estado)]}>
-                  <Card.Title>{item.nombreAfectado}</Card.Title>
-                  <Card.Divider />
-                  <Text>Fecha: {item.fecha}</Text>
-                  <Text>Comuna: {item.nombreComuna}</Text>
-                  <Text>Estado: {item.estado}</Text>
-                </Card>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  };
+        >
+          <Picker.Item label="Seleccione una comuna" value="" />
+          {dataComunaEstablecimiento.map(comuna => (
+            <Picker.Item key={comuna.id} label={comuna.name} value={comuna.name} />
+          ))}
+        </Picker>
+      </View>
 
-  
+      <View style={styles.cantidadUsuariosContainer}>
+        <Text style={{fontWeight: 'bold', marginRight: 10, color:'red'}}>
+          Revisión: {cantidadEnRevision}
+        </Text>
+        <Text style={{fontWeight: 'bold', marginRight: 10, color:'blue'}}>
+          Reportados: {cantidadReportados}
+        </Text>
+      </View>
+
+      <ScrollView>
+        <View style={styles.container}>
+
+
+          {lista.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => handleCardPress(item.id)}
+            >
+              <Card containerStyle={[styles.card, getCardBorderStyle(item.estado)]}>
+                <Card.Title>{item.nombreAfectado}</Card.Title>
+                <Card.Divider />
+                <Text>Fecha: {item.fecha}</Text>
+                <Text>Comuna: {item.nombreComuna}</Text>
+                <Text>Estado: {item.estado}</Text>
+              </Card>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+
 const styles = StyleSheet.create({
   header: {
     paddingVertical: 20,
@@ -149,6 +172,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.light,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  cantidadUsuariosContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  cantidadUsuariosText: {
+    fontWeight: 'bold',
+    marginRight: 10,
   },
   touchable: {
     height: 130,
@@ -217,6 +249,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginTop: 5,
+    borderRadius:10,
   },
   textoBoton: {
     color: COLORS.white,

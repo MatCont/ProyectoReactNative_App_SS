@@ -1,38 +1,46 @@
 // mostrar el rut y el establecimiento asignado
-import React from 'react';
-import { getAuth, initializeApp, signOut} from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { getAuth, initializeApp, signOut } from 'firebase/auth';
 import { firebaseConfig } from '../consts/firebase';
-import {Dimensions, Image, SafeAreaView, StyleSheet, Text, View,Button} from 'react-native';
-import {ScrollView, TextInput, TouchableHighlight, TouchableOpacity, } from 'react-native-gesture-handler';
+import { Dimensions, Image, SafeAreaView, StyleSheet, Text, View, Button } from 'react-native';
+import { ScrollView, TextInput, TouchableHighlight, TouchableOpacity, } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../consts/colors';
 
-const {width} = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 const cardWidth = width / 2 - 20;
 
+const HomeOperador = ({ navigation }) => {
+  const [currentDate, setCurrentDate] = useState('');
 
-const HomeOperador = ({navigation}) => {
+  useEffect(() => {
+    const getCurrentDate = () => {
+      const date = new Date();
+      const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      setCurrentDate(formattedDate);
+    };
+
+    getCurrentDate();
+  }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.li}}>
-
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.li }}>
       <View style={style.header}>
         <View>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontSize: 28}}>Hola,</Text>
-            <Text style={{fontSize: 28, fontWeight: 'bold', marginLeft: 10}}>
-              Marcos
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ fontSize: 28 }}>Hola,</Text>
+            <Text style={{ fontSize: 28, fontWeight: 'bold', marginLeft: 10 }}>
+              Operador
             </Text>
           </View>
-          <Text style={{marginTop: 5, fontSize: 22, color: COLORS.grey}}>
+          <Text style={{ marginTop: 5, fontSize: 22, color: COLORS.grey }}>
             ¿Necesitas ayuda?
           </Text>
         </View>
         <Image
           source={require('../assets/person.png')}
-          style={{height: 50, width: 50, borderRadius: 25}}
+          style={{ height: 50, width: 50, borderRadius: 25 }}
         />
-       
       </View>
       <View
         style={{
@@ -40,12 +48,10 @@ const HomeOperador = ({navigation}) => {
           flexDirection: 'row',
           paddingHorizontal: 20,
         }}>
-
-
         <View style={style.inputContainer}>
           <Icon name="search" size={28} />
           <TextInput
-            style={{flex: 1, fontSize: 18}}
+            style={{ flex: 1, fontSize: 18 }}
             placeholder="Buscas ..."
           />
         </View>
@@ -53,14 +59,15 @@ const HomeOperador = ({navigation}) => {
           <Icon name="tune" size={28} color={COLORS.white} />
         </View>
       </View>
-      
       <View>
-      <Image
+        <Text style={{ fontSize: 16, fontWeight: 'bold', marginHorizontal: 10, marginBottom: 10 }}>
+          Fecha actual: {currentDate}
+        </Text>
+        <Image
           source={require('../assets/fondo.jpg')}
-          style={{marginTop: 5,marginHorizontal: 5,height: 400, width: 350,borderRadius: 15,justifyContent: 'center'}}
+          style={{ marginTop: 5, marginHorizontal: 5, height: 400, width: 350, borderRadius: 15, justifyContent: 'center' }}
         />
       </View>
-      
     </SafeAreaView>
   );
 };

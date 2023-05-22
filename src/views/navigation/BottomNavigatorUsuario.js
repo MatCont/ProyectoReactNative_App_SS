@@ -1,15 +1,14 @@
-/*
 import 'react-native-gesture-handler';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
 import {View} from 'react-native';
-import HomeScreen from '../screens/usuario/HomeScreen';
-import FormularioScreen from '../screens/usuario/FormularioScreen';
-import Perfil from '../screens/usuario/Perfil';
-import VistaReportesUsuarios from '../screens/nuevas/VistaReportesUsuario';
-import showReporte from '../screens/operador/ShowReporte'
+import HomeScreen from '../HomeScreen';
+import Formulario from '../Formulario';
+import Perfil from '../Perfil';
+import VistaReportesUsuarios from '../VistaReportesUsuario';
+import showReporte from '../ShowReporte'
 
 import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
@@ -52,7 +51,7 @@ const BottomNavigatorUsuario = () => {
       
       <Tab.Screen
         name="F.A.F"
-        component={FormularioScreen}
+        component={Formulario}
         options={{
           tabBarIcon: ({color}) => (
             <Icon name="article" color={color} size={28} />
@@ -86,5 +85,3 @@ const BottomNavigatorUsuario = () => {
 };
 
 export default BottomNavigatorUsuario;
-
-*/

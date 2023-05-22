@@ -11,12 +11,16 @@ const VistaUsuarios = (props) => {
   const [lista, setLista] = useState([]);
   const [filtroRole, setFiltroRole] = useState(null);
   const [filtroRut, setFiltroRut] = useState(null);
+  const [cantidadUsuarios, setCantidadUsuarios] = useState(0);
+  const [cantidadOperadores, setCantidadOperadores] = useState(0);
 
   useEffect(() => {
     const getLista = async () => {
       try {
         const querySnapshot = await getDocs(collection(FIRESTORE_DB, 'UsersAuthorizedAccess'));
         const docs = [];
+        let usuarios = 0;
+        let operadores = 0;
 
         querySnapshot.forEach((doc) => {
           const { primerNombre, segundoNombre, primerApellido, segundoApellido, role, correo, rut } = doc.data();
@@ -32,9 +36,17 @@ const VistaUsuarios = (props) => {
               correo,
               rut,
             });
+
+            if (role === 'usuario') {
+              usuarios++;
+            } else if (role === 'operador') {
+              operadores++;
+            }
           }
         });
         setLista(docs);
+        setCantidadUsuarios(usuarios);
+        setCantidadOperadores(operadores);
       } catch (error) {
         // Manejo del error
       }
@@ -65,6 +77,7 @@ const VistaUsuarios = (props) => {
       return {};
     }
   };
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.light, flex: 1 }}>
       <Image style={styles.image} source={require('../assets/logo_SS.png')} />
@@ -92,9 +105,9 @@ const VistaUsuarios = (props) => {
           <Text style={styles.textoBoton}>Operadores</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.botonAdd}  onPress={() => props.navigation.navigate('NewUser')}>
+        <TouchableOpacity style={styles.botonAdd} onPress={() => props.navigation.navigate('NewUser')}>
           <Icon name="person-add" size={30} color={COLORS.dark} />
-      </TouchableOpacity>
+        </TouchableOpacity>
       </View>
 
       <TextInput
@@ -103,6 +116,11 @@ const VistaUsuarios = (props) => {
         onChangeText={handleFiltrarRut}
         value={filtroRut}
       />
+
+      <View style={styles.cantidadUsuariosContainer}>
+        <Text style={styles.cantidadUsuariosText}>Usuarios: {cantidadUsuarios}</Text>
+        <Text style={styles.cantidadUsuariosText}>Operadores: {cantidadOperadores}</Text>
+      </View>
 
       <ScrollView>
         <View style={styles.container}>
@@ -196,7 +214,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   Titulo: {
-    
+
     color: '#1e6496',
     textAlign: 'center',
     textDecorationLine: 'underline',
@@ -204,9 +222,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   image: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
+    width: 50,
+    height: 50,
+    alignSelf: 'flex-start',
+    marginLeft: '8%',
     marginTop: 10,
   },
   filtros: {
@@ -219,6 +238,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 12,
     marginTop: 5,
+    borderRadius:10,
   },
   textoBoton: {
     color: COLORS.white,
@@ -227,8 +247,17 @@ const styles = StyleSheet.create({
     border: 2,
     borderColor: 'black',
   },
-  botonAdd:{
-    width:30,
+  botonAdd: {
+    width: 30,
+  },
+  cantidadUsuariosContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  cantidadUsuariosText: {
+    fontWeight: 'bold',
+    marginRight: 10,
   },
 });
 export default VistaUsuarios;

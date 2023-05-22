@@ -50,6 +50,25 @@ const ShowUser = ({ route }) => {
         }
     };
 
+    const confirmDeleteUser = () => {
+        Alert.alert(
+            'Confirmar Eliminación',
+            '¿Estás seguro de que quieres eliminar este usuario?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Eliminar',
+                    style: 'destructive',
+                    onPress: () => deleteUser(usuarioId),
+                },
+            ],
+            { cancelable: false }
+        );
+    };
+
     const deleteUser = async (id) => {
         try {
             await deleteDoc(doc(FIRESTORE_DB, 'UsersAuthorizedAccess', id));
@@ -84,7 +103,7 @@ const ShowUser = ({ route }) => {
                             <Text style={styles.subTitulo}>Correo: {usuario.correo}</Text>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={() => deleteUser(usuarioId)}>
+                        <TouchableOpacity style={styles.button} onPress={() => confirmDeleteUser}>
                             <Text style={styles.buttonText}>Eliminar</Text>
                         </TouchableOpacity>
 

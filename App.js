@@ -7,7 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler'
 
 import BottomNavigatorOperador from './src/views/navigation/BottomNavigationOperador';
-//import BottomNavigatorUsuario from './src/views/navigation/BottomNavigatorUsuario';
+import BottomNavigatorUsuario from './src/views/navigation/BottomNavigatorUsuario';
 const Stack = createStackNavigator();
 
 import Login from './src/views/Login';
@@ -20,7 +20,7 @@ const App = () => {
       <StatusBar backgroundColor="black" />
       <Stack.Navigator screenOptions={{ headerShown: Login }}>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={BottomNavigatorOperador} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={BottomNavigatorUsuario} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
