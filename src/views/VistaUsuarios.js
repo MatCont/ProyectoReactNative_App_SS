@@ -13,6 +13,7 @@ const VistaUsuarios = (props) => {
   const [filtroRut, setFiltroRut] = useState(null);
   const [cantidadUsuarios, setCantidadUsuarios] = useState(0);
   const [cantidadOperadores, setCantidadOperadores] = useState(0);
+  const [cantidadSolicitudes, setCantidadSolicitudes] = useState(0);
 
   useEffect(() => {
     const getLista = async () => {
@@ -54,6 +55,20 @@ const VistaUsuarios = (props) => {
 
     getLista();
   }, [filtroRole, filtroRut]);
+
+  useEffect(() => {
+    const getUsersNotAuthorizedAccess = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(FIRESTORE_DB, 'UsersNotAuthorizedAccess'));
+        // Contar la cantidad de usuarios
+        setCantidadSolicitudes(querySnapshot.size);        
+      } catch (error) {
+        // Manejar errores
+      }
+    };
+  
+    getUsersNotAuthorizedAccess();
+  }, []);
 
   const handleFiltrarRole = (role) => {
     setFiltroRole(role);
@@ -105,8 +120,12 @@ const VistaUsuarios = (props) => {
           <Text style={styles.textoBoton}>Operadores</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.botonAdd} onPress={() => props.navigation.navigate('NewUser')}>
+        <TouchableOpacity style={styles.botonAdd} onPress={() => props.navigation.navigate('NewUserList')}>
+        <View style={styles.badge}>
+            <Text style={styles.badgeText}>{cantidadSolicitudes}</Text>
+          </View>
           <Icon name="person-add" size={30} color={COLORS.dark} />
+          
         </TouchableOpacity>
       </View>
 
@@ -149,6 +168,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 20,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  badge: {
+    backgroundColor: 'red',
+    borderRadius: 50,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 14,
   },
   container: {
     flex: 1,
@@ -235,10 +270,11 @@ const styles = StyleSheet.create({
   },
   botonFiltro: {
     backgroundColor: COLORS.primary,
-    paddingVertical: 2,
+    paddingVertical: '3%',
     paddingHorizontal: 12,
-    marginTop: 5,
-    borderRadius:10,
+    marginTop: 15,
+    borderRadius: 10,
+
   },
   textoBoton: {
     color: COLORS.white,

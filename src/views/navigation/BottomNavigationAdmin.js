@@ -10,8 +10,9 @@ import HomeOperador from '../HomeOperador'
 import VistaReportes from '../VistaReportes';
 import ShowReporte from '../ShowReporte'
 import VistaUsuarios from '../VistaUsuarios'
-import NewUser from '../NewUser'
+import NewUserList from '../NewUserList'
 import ShowUser from '../ShowUser'
+import AuthorizeUser from '../AuthorizeUser';
 
 const Stack = createStackNavigator();
 
@@ -31,8 +32,9 @@ function MyStackUsuarios(){
   return(
     <Stack.Navigator initialRouteName="VistaReportes">
       <Stack.Screen name='VistaUsuarios' component={VistaUsuarios}  options={{headerShown:false,}} />
-      <Stack.Screen name='NewUser' component={NewUser} options={{headerShown:false,}}/>
+      <Stack.Screen name='NewUserList' component={NewUserList} options={{headerShown:false,}}/>
       <Stack.Screen name='ShowUser' component={ShowUser} options={{headerShown:false,}}/>
+      <Stack.Screen name='ShowAuthorizeUser' component={AuthorizeUser} options={{headerShown:false,}}/>
     </Stack.Navigator>
       
   )

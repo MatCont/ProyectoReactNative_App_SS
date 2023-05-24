@@ -8,7 +8,7 @@ import { initializeApp } from 'firebase/app'
 import { firebaseConfig } from '../consts/firebase';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
-import BottomNavigatorOperador from './navigation/BottomNavigationOperador';
+import BottomNavigatorAdmin from './navigation/BottomNavigationAdmin';
 import BottomNavigatorUsuario from './navigation/BottomNavigatorUsuario';
 
 const Login = () => {
@@ -46,12 +46,13 @@ const Login = () => {
       
             // Realizar la redirección según el dominio del correo electrónico
             if (domain === 'oper.cl') {
-              navigation.navigate('HomeOperador');
+              
             } else if (domain === 'user.cl') {
               navigation.navigate('HomeUsuario');
             } else if (domain === 'admin.cl') {
               // Mostrar un texto en lugar de una ventana específica
-              console.log('Administrador logueado');
+              navigation.navigate('HomeAdmin');
+              
             } else {
               console.log('Correo electrónico no válido');
             }

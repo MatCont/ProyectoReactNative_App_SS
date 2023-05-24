@@ -1,7 +1,5 @@
-//registra un faf completo
-//terminar
 
-//obtener edad, provincia, 
+//obtener provincia, 
 
 import React from 'react';
 import { useState, useEffect } from 'react';

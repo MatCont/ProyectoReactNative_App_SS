@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { FIRESTORE_DB } from '../consts/firebase';
@@ -99,8 +100,9 @@ const ShowUser = ({ route }) => {
                             <Text style={styles.subTitulo}>
                                 Nombre: {usuario.primerNombre} {usuario.segundoNombre} {usuario.primerApellido} {usuario.segundoApellido}
                             </Text>
-                            <Text style={styles.subTitulo}>Rol: {usuario.role}</Text>
                             <Text style={styles.subTitulo}>Correo: {usuario.correo}</Text>
+                            <Text style={styles.subTitulo}>Rol: {usuario.role}</Text>
+                            <Text style={styles.subTitulo}>Establecimiento: {usuario.establecimiento}</Text>
                         </View>
 
                         <TouchableOpacity style={styles.button} onPress={() => confirmDeleteUser}>
@@ -192,7 +194,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     subTitulo: {
-        marginTop: 15,
+        marginTop: 5,
+        marginBottom:5,
         height: 35,
         borderRadius: 10,
         color: '#fff',
@@ -215,3 +218,4 @@ const styles = StyleSheet.create({
 });
 
 export default ShowUser
+ 
