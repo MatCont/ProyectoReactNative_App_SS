@@ -11,7 +11,7 @@ import { getFirestore, collection, query, where, getDocs } from 'firebase/firest
 import BottomNavigatorAdmin from './navigation/BottomNavigationAdmin';
 import BottomNavigatorUsuario from './navigation/BottomNavigatorUsuario';
 
-const Login = () => {
+const Login = (props) => {
 
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
@@ -83,7 +83,7 @@ const Login = () => {
                         <TouchableOpacity onPress={handleSignIn} style={[style.button, { backgroundColor: '#00cfeb90', borderRadius: 10 }]}>
                             <Text style={style.text}>Login</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleCreateAccount} style={[style.button, { backgroundColor: '#6792f090', borderRadius: 10 }]}>
+                        <TouchableOpacity onPress={() => props.navigation.navigate('AccessForm')} style={[style.button, { backgroundColor: '#6792f090', borderRadius: 10 }]}>
                             <Text style={style.text}>Create Account</Text>
                         </TouchableOpacity>
                     </View>

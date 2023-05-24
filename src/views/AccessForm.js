@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 
 import { FIRESTORE_DB } from '../consts/firebase';
 import { addDoc, collection } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 import COLORS from '../consts/colors';
 import { PrimaryButton } from './components/Button';
@@ -13,25 +14,40 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 
 
-const AccessForm = () => {
+const AccessForm = (props) => {
 
     const agregarUsuarioNoAutorizado = async () => {
-        addDoc(collection(FIRESTORE_DB, 'UsersNotAuthorizedAccess'), {
+        const auth = getAuth();
+        const user = auth.currentUser;
+        
+        // Verifica si el usuario está autenticado
+        if (user) {
+          // Obtiene el uid del usuario
+          const uid = user.uid;
+          
+          // Agrega el uid al documento en Firebase
+          addDoc(collection(FIRESTORE_DB, 'UsersNotAuthorizedAccess'), {
+            uid: uid,
             correo: correo,
             primerNombre: primerNombre,
             segundoNombre: segundoNombre,
             primerApellido: primerApellido,
             segundoApellido: segundoApellido,
             rut: rutValido,
-        })
-        Alert.alert('Registro enviado');
-    };
+          })
+          Alert.alert('Registro enviado');
+        } else {
+          // El usuario no está autenticado, maneja el caso según tus necesidades
+          Alert.alert('Usuario no autenticado');
+        }
+      };
 
     const datosObligatorios = async () => {
         if (!correo || !primerNombre || !segundoNombre || !primerApellido || !segundoApellido || !rut) {
             Alert.alert('Faltan datos', 'Por favor complete los campos obligatorios');
         } else {
             agregarUsuarioNoAutorizado()
+            handleVolver();
         }
     }
 
@@ -171,7 +187,7 @@ const AccessForm = () => {
                     placeholder="Rut sin puntos ni guion"
                     style={styles.textInput}
                 />
-                {setRutValido ? (
+                {rutValido ? (
                     <Text style={{ color: 'green', alignSelf: 'center' }}>Rut válido</Text>
                 ) : (
                     <Text style={{ color: 'red', alignSelf: 'center' }}>Rut incorrecto</Text>

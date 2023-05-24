@@ -105,7 +105,7 @@ const ShowUser = ({ route }) => {
                             <Text style={styles.subTitulo}>Establecimiento: {usuario.establecimiento}</Text>
                         </View>
 
-                        <TouchableOpacity style={styles.button} onPress={() => confirmDeleteUser}>
+                        <TouchableOpacity style={styles.button} onPress={() => confirmDeleteUser()}>
                             <Text style={styles.buttonText}>Eliminar</Text>
                         </TouchableOpacity>
 

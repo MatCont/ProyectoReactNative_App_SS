@@ -30,7 +30,7 @@ const HomeOperador = ({ navigation }) => {
           <View style={{ flexDirection: 'row' }}>
             <Text style={{ fontSize: 28 }}>Hola,</Text>
             <Text style={{ fontSize: 28, fontWeight: 'bold', marginLeft: 10 }}>
-              Operador(AD)
+              Funcionario
             </Text>
           </View>
           <Text style={{ marginTop: 5, fontSize: 22, color: COLORS.grey }}>
@@ -38,8 +38,8 @@ const HomeOperador = ({ navigation }) => {
           </Text>
         </View>
         <Image
-          source={require('../assets/person.png')}
-          style={{ height: 50, width: 50, borderRadius: 25 }}
+          source={require('../assets/logo_SS.png')}
+          style={{ height: 50, width: 50}}
         />
       </View>
       <View

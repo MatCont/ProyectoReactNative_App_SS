@@ -122,7 +122,6 @@ const Formulario = (navigation) => {
         setMutualiad(doc.data().mutualidad);
         setEstamentoAfectado(doc.data().estamentoAfectado);
         setTipoEstamento(doc.data().tipoEstamento);
-        console.log();
       });
       toggleEditing();
     }
@@ -330,7 +329,7 @@ const Formulario = (navigation) => {
           <>
             <Text style={styles.categoria}>I.	IDENTIFIQUE TIPO(S) DE AGRESIÓN(ES)</Text>
 
-            <Text style={styles.subTitulo}>Ingrese tipo de agresión*</Text>
+            <Text style={styles.subTitulo}>Ingrese tipo de agresión</Text>
             <View style={styles.multiSelect}>
               <Picker
                 selectedValue={tipoAgresion}
@@ -361,7 +360,7 @@ const Formulario = (navigation) => {
 
             <Text style={styles.categoria}>II.	ANTECEDENTES DE LA AGRESIÓN</Text>
 
-            <Text style={styles.subTitulo}>Ingrese fecha (*)</Text>
+            <Text style={styles.subTitulo}>Ingrese fecha</Text>
             <TextInput
               value={fecha}
               placeholder="dd mm yyyy"
@@ -375,7 +374,7 @@ const Formulario = (navigation) => {
               <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
             )}
 
-            <Text style={styles.subTitulo}>Ingrese hora*</Text>
+            <Text style={styles.subTitulo}>Ingrese hora</Text>
             <View style={styles.containerPick}>
               <Picker
                 style={styles.picker}
@@ -498,7 +497,7 @@ const Formulario = (navigation) => {
             <Text style={styles.categoria}>III.	DATOS DE EL/LA AGRESOR/A </Text>
 
 
-            <Text style={styles.subTitulo}>Seleccione tipo agresor *</Text>
+            <Text style={styles.subTitulo}>Seleccione tipo agresor</Text>
             <View style={styles.multiSelect}>
               <Picker
                 selectedValue={tipoAgresor}
@@ -649,7 +648,7 @@ const Formulario = (navigation) => {
               <Text style={styles.campoObligatorio}>Campo obligatorio</Text>
             )}
 
-            <Text style={styles.subTitulo}>Ingrese rut de testigo 1*</Text>
+            <Text style={styles.subTitulo}>Ingrese rut de testigo 1</Text>
             <TextInput
               value={rutTestigo1}
               onChangeText={setRutTestigo1}
@@ -666,7 +665,7 @@ const Formulario = (navigation) => {
             )}
 
 
-            <Text style={styles.subTitulo}>Ingrese telefono de testigo 1*</Text>
+            <Text style={styles.subTitulo}>Ingrese telefono de testigo 1</Text>
             <TextInput
               value={telefonoTestigo1}
               onChangeText={setTelefonoTestigo1}
