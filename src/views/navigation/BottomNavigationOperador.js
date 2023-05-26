@@ -11,8 +11,8 @@ import VistaReportes from '../VistaReportes';
 import ShowReporte from '../ShowReporte'
 import VistaUsuarios from '../VistaUsuarios'
 import NewUserList from '../NewUserList'
-import ShowUser from '../ShowUser'
-import AuthorizeUser from '../AuthorizeUser';
+import OperShowUser from '../operador/OperShowUser'
+import OperAuthorizeUser from '../operador/OperAuthorizeUser';
 
 const Stack = createStackNavigator();
 
@@ -30,17 +30,17 @@ function MyStackReportes(){
 //
 function MyStackUsuarios(){
   return(
-    <Stack.Navigator initialRouteName="VistaUsuarios">
+    <Stack.Navigator initialRouteName="VistaReportes">
       <Stack.Screen name='VistaUsuarios' component={VistaUsuarios}  options={{headerShown:false,}} />
       <Stack.Screen name='NewUserList' component={NewUserList} options={{headerShown:false,}}/>
-      <Stack.Screen name='ShowUser' component={ShowUser} options={{headerShown:false,}}/>
-      <Stack.Screen name='ShowAuthorizeUser' component={AuthorizeUser} options={{headerShown:false,}}/>
+      <Stack.Screen name='ShowUser' component={OperShowUser} options={{headerShown:false,}}/>
+      <Stack.Screen name='ShowAuthorizeUser' component={OperAuthorizeUser} options={{headerShown:false,}}/>
     </Stack.Navigator>
       
   )
 }
 
-const BottomNavigatorAdmin = () => {
+const BottomNavigatorOperador = () => {
   return (
      <Tab.Navigator
       tabBarOptions={{
@@ -100,18 +100,4 @@ const BottomNavigatorAdmin = () => {
   );
 };
 
-export default BottomNavigatorAdmin;
-/*
-
-      <Tab.Screen
-        name="F.A.F"
-        component={FormularioOperador}
-        options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="article" color={color} size={28} />
-          ),
-          headerShown: false,
-          
-        }}
-      />
-*/
+export default BottomNavigatorOperador;

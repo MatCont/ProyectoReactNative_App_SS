@@ -194,7 +194,7 @@ const Formulario = (navigation) => {
 
   //V.	TESTIGOS DEL CONFLICTO
   // TESTIGO 1
-  
+
   const [primerNombreTestigo1, setPrimerNombreTestigo1] = useState('');
   const [segundoNombreTestigo1, setSegundoNombreTestigo1] = useState('');
   const [primerApellidoTestigo1, setPrimerApellidoTestigo1] = useState('');

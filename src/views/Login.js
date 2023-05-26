@@ -40,13 +40,19 @@ const Login = (props) => {
             console.log('Signed in');
             const user = userCredential.user;
             console.log(user);
-      
+            
+            //colocar que ingresen con cuenta de google
+            //leer database de usuarios con acceso autorizado y comprobar si el correo esta,
+            //al estar obtener su rol y mostrar su navegador correspondiente,
+            //de no estar mostrarle la ventana de AccessForm
+
+
             // Obtener el dominio del correo electrónico
             const domain = email.split('@')[1];
       
             // Realizar la redirección según el dominio del correo electrónico
             if (domain === 'oper.cl') {
-              
+                navigation.navigate('HomeOperador');
             } else if (domain === 'user.cl') {
               navigation.navigate('HomeUsuario');
             } else if (domain === 'admin.cl') {
@@ -54,6 +60,7 @@ const Login = (props) => {
               navigation.navigate('HomeAdmin');
               
             } else {
+                navigation.navigate('AccessForm');
               console.log('Correo electrónico no válido');
             }
           })
@@ -84,7 +91,7 @@ const Login = (props) => {
                             <Text style={style.text}>Login</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => props.navigation.navigate('AccessForm')} style={[style.button, { backgroundColor: '#6792f090', borderRadius: 10 }]}>
-                            <Text style={style.text}>Create Account</Text>
+                            <Text style={style.text}>Solicitar Acceso</Text>
                         </TouchableOpacity>
                     </View>
                 </BlurView>

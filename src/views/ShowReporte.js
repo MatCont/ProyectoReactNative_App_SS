@@ -42,11 +42,9 @@ const ShowReporte = ({ route, reportes, setReportes, actualizarListaReportes }) 
       await updateDoc(reporteRef, { estado: 'reportado' });
       setReporteEstado('reportado');
       Alert.alert('Reporte actualizado');
-      actualizarListaReportes(); // Actualizar la lista de reportes
       handleVolver();
     } catch (error) {
       console.log(error);
-      Alert.alert('Error al actualizar el reporte');
     }
   };
 
@@ -72,6 +70,7 @@ const ShowReporte = ({ route, reportes, setReportes, actualizarListaReportes }) 
                             <Text style={styles.subTitulo}>Hora: {reporte.hora}</Text>
                             <Text style={styles.subTitulo}>Nombre comuna: {reporte.nombreComuna}</Text>
                             <Text style={styles.subTitulo}>Tipo establecimiento: {reporte.nombreTipo}</Text>
+                            <Text style={styles.subTitulo}>Establecimiento: {reporte.establecimientoId}</Text>                            
                             <Text style={styles.subTitulo}>Servicio de salud: {reporte.servicioSalud}</Text>
                             <Text style={styles.subTitulo}>Unidad: {reporte.unidad}</Text>
                             <Text style={styles.subTitulo}>Descripcion de la unidad: {reporte.descripcionUnidad}</Text>
